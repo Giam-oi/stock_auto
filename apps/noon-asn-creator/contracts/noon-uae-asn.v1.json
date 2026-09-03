@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "site": "UAE",
+  "operations": {
+    "find": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/partner_asn_details",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": {
+        "idPartnerSource": "${partnerIdNumber}",
+        "pagination": { "page": 1, "perPage": 10, "totalPages": 10 },
+        "filters": { "status_list": ["created", "pending", "sealed"] },
+        "orderBy": "DESC"
+      },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data.rows",
+        "asnNumberPaths": ["asn_nr"],
+        "statusPaths": ["status"],
+        "itemArrayPaths": ["lines"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["qty"]
+      }
+    },
+    "create": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/create",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": { "totalQty": "${totalQuantity}" },
+      "successStatuses": [200],
+      "response": {
+        "asnNumberPaths": ["data.asn_nr"],
+        "statusPaths": ["data.id_status"],
+        "itemArrayPaths": ["data.lines"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["qty"]
+      }
+    },
+    "details": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/partner_asn_details",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": {
+        "idPartnerSource": "${partnerIdNumber}",
+        "asnNr": "${asnNumber}",
+        "pagination": { "page": 1, "perPage": 100, "totalPages": 1 },
+        "filters": {}
+      },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data.rows",
+        "asnNumberPaths": ["asn_nr"],
+        "statusPaths": ["status"],
+        "itemArrayPaths": ["lines"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["qty"]
+      }
+    },
+    "seal": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/seal",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": { "asnNr": "${asnNumber}" },
+      "successStatuses": [200],
+      "response": {
+        "asnNumberPaths": ["data.asn_nr", "asn_nr"],
+        "statusPaths": ["data.status", "status"],
+        "itemArrayPaths": ["data.lines", "lines"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["qty"]
+      }
+    }
+  },
+  "workflow": {
+    "eligible": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/list_eligible_lines",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": {
+        "search": { "value": "${partnerSku}" },
+        "pagination": { "cursor": null, "perPage": 10, "page": 1, "totalPages": 1 }
+      },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "rows",
+        "asnNumberPaths": ["partner_sku"],
+        "statusPaths": ["storage_type_code"],
+        "itemArrayPaths": ["rows"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["quantity"]
+      }
+    },
+    "classify": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/lines/get_size_classification?length=1&width=1&height=1&weight=1",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": {},
+      "successStatuses": [200],
+      "response": {
+        "asnNumberPaths": ["size_classification"],
+        "statusPaths": ["storage_type_code"],
+        "itemArrayPaths": ["data"],
+        "skuPaths": ["size_classification"],
+        "quantityPaths": ["volume"]
+      }
+    },
+    "route": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/routing/warehouse",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": { "asnNr": "${asnNumber}", "lines": "${routeItemsJson}" },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data",
+        "asnNumberPaths": ["asn_nr"],
+        "statusPaths": ["status"],
+        "itemArrayPaths": ["data"],
+        "skuPaths": ["sku"],
+        "quantityPaths": ["qty"]
+      }
+    },
+    "createLines": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/lines/create-batch",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": { "asnNr": "${asnNumber}", "partnerAsnLineList": "${catalogItemsJson}" },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data",
+        "asnNumberPaths": ["asn_nr"],
+        "statusPaths": ["asn_status"],
+        "itemArrayPaths": ["data"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["qty"]
+      }
+    },
+    "storageCheck": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/inbound-partners/asn/available_storage_check",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner", "User-Agent"],
+      "bodyTemplate": { "asnNr": "${asnNumber}" },
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data",
+        "asnNumberPaths": ["asn_nr"],
+        "statusPaths": ["status"],
+        "itemArrayPaths": ["data"],
+        "skuPaths": ["storage_type_code"],
+        "quantityPaths": ["cubic_feet"]
+      }
+    }
+  }
+}

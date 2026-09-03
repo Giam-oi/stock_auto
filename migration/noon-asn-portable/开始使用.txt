@@ -1,0 +1,11 @@
+Noon ASN Codex 完整迁移包
+
+1. 先阅读 docs\新电脑复用说明.md 和 docs\安全迁移清单.md。
+2. 在新电脑安装 Codex、Google Chrome 和 Microsoft Excel。
+3. 解压本 ZIP 后运行：
+   powershell -ExecutionPolicy Bypass -File .\install.ps1
+4. 六店 Noon 私钥、企微 Webhook、业务表和运行日志不在本包内，必须通过安全渠道单独迁移。
+5. 运行预检并重启 Codex，然后在 Codex 中打开安装后的 stock_auto 项目。
+6. 首次真实操作先执行只读查询，再用一份测试表验证创建、锁单、预约、企微和 Excel 写回。
+
+不要直接在 ZIP 内运行程序，也不要把凭证复制到项目、技能或 EXE 发布目录。

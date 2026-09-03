@@ -1,0 +1,4 @@
+inventory_type,partner_sku,qty,id_partner,inventory_snapshot_at,country_code,title
+saleable,SKU-1,10,42958,"2026-08-07, 09:58:08",AE,"Red, large"
+saleable,SKU-2,5,42958,"2026-08-07, 09:58:08",AE,Blue
+reserved,SKU-3,7,42958,"2026-08-07, 09:58:08",AE,Green

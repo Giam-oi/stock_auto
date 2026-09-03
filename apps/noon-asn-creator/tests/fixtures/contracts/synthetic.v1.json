@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "site": "UAE",
+  "operations": {
+    "find": {
+      "method": "GET",
+      "urlTemplate": "https://fbn.noon.partners/_svc/asn?project=${projectCode}&country=${countryCode}",
+      "allowedHeaders": ["Cookie", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner"],
+      "successStatuses": [200],
+      "response": {
+        "recordsPath": "data.records",
+        "asnNumberPaths": ["asn_number", "asnNumber"],
+        "statusPaths": ["status"],
+        "itemArrayPaths": ["items"],
+        "skuPaths": ["partner_sku", "partnerSku"],
+        "quantityPaths": ["quantity"]
+      }
+    },
+    "create": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/asn/create?project=${projectCode}",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner"],
+      "bodyTemplate": { "items": "${itemsJson}" },
+      "successStatuses": [200, 201, 202],
+      "response": {
+        "asnNumberPaths": ["data.asn_number", "asn_number"],
+        "statusPaths": ["data.status", "status"],
+        "itemArrayPaths": ["data.items", "items"],
+        "skuPaths": ["partner_sku", "partnerSku"],
+        "quantityPaths": ["quantity"]
+      }
+    },
+    "details": {
+      "method": "GET",
+      "urlTemplate": "https://fbn.noon.partners/_svc/asn/${asnNumber}?locale=${locale}",
+      "allowedHeaders": ["Cookie", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner"],
+      "successStatuses": [200],
+      "response": {
+        "asnNumberPaths": ["data.asn_number"],
+        "statusPaths": ["data.status"],
+        "itemArrayPaths": ["data.items"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["quantity"]
+      }
+    },
+    "seal": {
+      "method": "POST",
+      "urlTemplate": "https://fbn.noon.partners/_svc/asn/seal?project=${projectCode}",
+      "allowedHeaders": ["Cookie", "Content-Type", "X-Locale", "X-Platform", "X-Project", "Country-Code", "Id-Partner"],
+      "bodyTemplate": { "asnNr": "${asnNumber}" },
+      "successStatuses": [200],
+      "response": {
+        "asnNumberPaths": ["data.asn_number"],
+        "statusPaths": ["data.status"],
+        "itemArrayPaths": ["data.items"],
+        "skuPaths": ["partner_sku"],
+        "quantityPaths": ["quantity"]
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Noon 会话监控器",
+  "version": "4.2.2",
+  "description": "检查并定期保活当前 Chrome 个人资料中的 Noon 网页会话。",
+  "permissions": ["alarms", "storage", "tabs", "scripting"],
+  "host_permissions": [
+    "https://*.noon.partners/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Noon 会话监控器"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://127.0.0.1/*"],
+      "js": ["bridge.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

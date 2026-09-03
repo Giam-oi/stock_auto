@@ -1,0 +1,39 @@
+{
+  "name": "noon-asn-creator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": "dist/src/main.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "package:win": "node scripts/build-exe.mjs"
+  },
+  "pkg": {
+    "scripts": [
+      "dist/**/*.js"
+    ],
+    "assets": [
+      "contracts/noon-uae-asn.v1.json",
+      "dist/package.json",
+      "dist/browsers.json"
+    ]
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.10",
+    "exceljs": "^4.4.0",
+    "jszip": "^3.10.1",
+    "playwright-core": "^1.62.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@yao-pkg/pkg": "^6.22.0",
+    "esbuild": "^0.28.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
